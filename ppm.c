@@ -16,7 +16,7 @@ void ppm_write_to_file(int width, int height, u_char* data, FILE* file);
 // Read the image contained in plain RGB ppm file <file>
 // into <data> and set <width> and <height> accordingly
 // Warning: data is malloc_ed, don't forget to free it
-void ppm_read_from_file(int *width, int *height, u_char** data);
+void ppm_read_from_file(int *width, int *height, u_char** data, FILE* file);
 
 // Desaturate (transform to B&W) <image> (of size <width> * <height>)
 void ppm_desaturate(u_char* image, int width, int height);
@@ -38,8 +38,9 @@ int main(int argc, char* argv[])
   u_char* image = NULL;
   int width;
   int height;
-
-  ppm_read_from_file(&width, &height, &image);
+  FILE* ppm_input = fopen("gargouille.ppm", "rb");
+  ppm_read_from_file(&width, &height, &image, ppm_input);
+  fclose(ppm_input);
 
 
   //--------------------------------------------------------------------------
@@ -92,7 +93,7 @@ int main(int argc, char* argv[])
 
 
 //============================================================================
-//                           Function desciptions
+//                           Function declarations
 //============================================================================
 void ppm_write_to_file(int width, int height, u_char* data, FILE* file)
 {
@@ -103,9 +104,8 @@ void ppm_write_to_file(int width, int height, u_char* data, FILE* file)
   fwrite(data, 3, width*height, file);
 }
 
-void ppm_read_from_file(int *width, int *height, u_char** data)
+void ppm_read_from_file(int *width, int *height, u_char** data, FILE* file)
 {
-  FILE* file = fopen("gargouille.ppm", "rb");
   // Read file header
   fscanf(file, "P6\n%d %d\n255\n", width, height);
 
@@ -114,8 +114,6 @@ void ppm_read_from_file(int *width, int *height, u_char** data)
 
   // Read the actual image data
   fread(*data, 3, (*width) * (*height), file);
-  fclose(file);
-  
 }
 
 void ppm_desaturate(u_char* image, int width, int height)
@@ -211,3 +209,38 @@ void ppm_shrink(u_char** image, int *width, int *height, int factor)
   free(*image);
   *image = new_image;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
