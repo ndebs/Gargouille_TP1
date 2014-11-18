@@ -7,12 +7,24 @@
 
 
 //============================================================================
-//                           Function declarations
+//                           Structure declarations
 //============================================================================
+
+
+typedef struct 
+{
+    int width; // Width
+    int height; // Heigth
+    u_char *image; //Tab blue green red
+}structure;
+
+
+//============================================================================
+//                           Function declarations
+//=========================width===================================================
 // Write the image contained in <data> (of size <width> * <height>)
 // into plain RGB ppm file, which name is <filename>
 void ppm_write_to_file(int width, int height, u_char* data, char* filename);
-
 // Read the image contained in plain RGB ppm file <file>
 // into <data> and set <width> and <height> accordingly
 // Warning: data is malloc_ed, don't forget to free it
@@ -32,57 +44,65 @@ void ppm_shrink(u_char** image, int *width, int *height, int factor);
 //============================================================================
 int main(int argc, char* argv[])
 {
+  //Call the structure
+  structure photo;
+
+
   //--------------------------------------------------------------------------
   // Read file "gargouille.ppm" into image (width and height)
   //--------------------------------------------------------------------------
-  u_char* image = NULL;
-  int width;
-  int height;
-
-  ppm_read_from_file(&width, &height, &image);
-
-
+  photo.image = NULL;
+  photo.width;
+  photo.height;
+ 
+  ppm_read_from_file(&photo.width, &photo.height, &photo.image);
+  
   //--------------------------------------------------------------------------
   // Create a desaturated (B&W) copy of the image we've just read and
   // write it into "gargouille_BW.ppm"
   //--------------------------------------------------------------------------
+  
+  structure photo_bw;
   // Copy image into image_bw
-  int width_bw  = width;
-  int height_bw = height;
-  u_char* image_bw = (u_char*) malloc(3 * width * height * sizeof(*image_bw));
-  memcpy(image_bw, image, 3 * width * height * sizeof(*image_bw));
+  photo_bw.width  = photo.width;
+  photo_bw.height = photo.height;
+  photo_bw.image = (u_char*) malloc(3 * photo.width * photo.height * sizeof(*photo_bw.image));
+  memcpy(photo_bw.image, photo.image, 3 * photo_bw.width * photo_bw.height * sizeof(*photo_bw.image));
 
   // Desaturate image_bw
-  ppm_desaturate(image_bw, width, height);
+  ppm_desaturate(photo_bw.image, photo_bw.width, photo_bw.height);
 
   char file_bw_name[18] = "gargouille_bw.ppm";
-  ppm_write_to_file(width, height, image_bw,file_bw_name);
+  ppm_write_to_file(photo_bw.width, photo_bw.height, photo_bw.image,file_bw_name);
 
   // Free the desaturated image
-  free(image_bw);
+  free(photo_bw.image);
 
 
   //--------------------------------------------------------------------------
   // Create a resized copy of the image and
   // write it into "gargouille_small.ppm"
   //--------------------------------------------------------------------------
+  
+  structure photo_small;
+  
   // Copy image into image_small
-  int width_small  = width;
-  int height_small = height;
-  u_char* image_small = (u_char*) malloc(3 * width_small * height_small * sizeof(*image_small));
-  memcpy(image_small, image, 3 * width_small * height_small * sizeof(*image_small));
-
+  photo_small.width  = photo.width;
+  photo_small.height = photo.height;
+  photo_small.image = (u_char*) malloc(3 * photo_small.width * photo_small.height * sizeof(*photo_small.image));
+  memcpy(photo_small.image, photo.image, 3 * photo_small.width * photo_small.height * sizeof(*photo_small.image));
+  printf("Hello \n");
   // Shrink image_small size 2-fold
-  ppm_shrink(&image_small, &width_small, &height_small, 2);
+  ppm_shrink(&photo_small.image, &photo_small.width, &photo_small.height, 2);
 
   // Write the desaturated image into "gargouille_small.ppm"
   char file_small_name[21]= "gargouille_small.ppm";
-  ppm_write_to_file(width_small, height_small, image_small, file_small_name);
+  ppm_write_to_file(photo_small.width, photo_small.height, photo_small.image, file_small_name);
       
 
   // Free the not yet freed images
-  free(image);
-  free(image_small);
+  free(photo.image);
+  free(photo_small.image);
 
   return 0;
 }
