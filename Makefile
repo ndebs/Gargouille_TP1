@@ -1,6 +1,5 @@
 all: ppm
-ppm: ppm.cpp ppm_function.o
-	g++ -Wall -o ppm.o ppm.cpp ppm_function.o -lm 
-ppm_function.o: ppm.h ppm_function.cpp 
-	g++ -Wall -o  ppm_function.o ppm_function.cpp -c
-
+ppm: ppm.cpp Image.o
+	g++ -Wall -o ppm.o ppm.cpp Image.o -lm 
+Image.o: Image.h Image.cpp 
+	g++ -Wall -o  Image.o Image.cpp -c
