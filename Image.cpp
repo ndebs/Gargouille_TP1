@@ -20,6 +20,7 @@ Image::Image(void)
 //destructeur
 Image::~Image(void)
 { 
+	delete data;
 }
 
 
