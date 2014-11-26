@@ -1,3 +1,6 @@
+#ifndef PPM
+#define PPM
+
 class Image
 {
   public: 
@@ -14,7 +17,7 @@ class Image
     Image(void);
 
     //destructeur
-    //~Image(void);
+    ~Image(void);
 
     //constructeur par recopie
     Image(const Image& model);
@@ -38,3 +41,5 @@ class Image
    // <width> and <height> are updated accordingly
      void ppm_shrink(int factor);
 };
+
+#endif
