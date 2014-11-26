@@ -15,13 +15,12 @@ Image::Image(void)
     width = 0; 
     height = 0; 
     data = new u_char[1]; 
-
 }
+
 //destructeur
-/*Image::~Image(void)
+Image::~Image(void)
 { 
- 
-}*/
+}
 
 
 Image::Image(const Image& model)
